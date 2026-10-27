@@ -1,2 +1,3 @@
-# Keep the release files byte for byte (CRLF, ASCII) so their SHA-256 matches the published archive.
+# Keep the release files byte for byte (CRLF, ASCII) so their SHA-256 matches the published archives.
 src/** -text
+src-lastlight/** -text

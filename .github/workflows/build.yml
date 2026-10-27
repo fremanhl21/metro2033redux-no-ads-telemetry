@@ -14,16 +14,18 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Build the release archive and check the hashes
+      - name: Build the release archives and check the hashes
         run: python build.py
 
-      - name: Check that the PowerShell script parses
+      - name: Check that the PowerShell scripts parse
         shell: pwsh
         run: |
-          $errors = $null
-          [void][System.Management.Automation.Language.Parser]::ParseFile("$PWD/src/NoAdsTelemetry.ps1", [ref]$null, [ref]$errors)
-          if ($errors) { $errors | Format-List; exit 1 }
-          'NoAdsTelemetry.ps1: no parse errors'
+          foreach ($f in 'src/NoAdsTelemetry.ps1', 'src-lastlight/NoAdsTelemetry.ps1') {
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile("$PWD/$f", [ref]$null, [ref]$errors)
+            if ($errors) { $errors | Format-List; exit 1 }
+            "${f}: no parse errors"
+          }
 
       - uses: actions/upload-artifact@v7
         with:
